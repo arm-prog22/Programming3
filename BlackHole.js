@@ -1,8 +1,6 @@
-class BlackHole{
+class BlackHole extends LivingCreature{
   constructor(x,y,index){
-    this.x=x;
-    this.y=y;
-    this.index=index;
+    super(x,y,index);
     this.directions=[];
   }
 
@@ -41,22 +39,6 @@ class BlackHole{
       ];
     }
   
-    chooseCell(character) {
-      this.getNewCoords();
-      var found = [];
-      for (var i in this.directions) {
-        var x = this.directions[i][0];
-        var y = this.directions[i][1];
-        if (x >= 0 && x < matrix[0].length && y >= 0 && y < matrix.length) {
-          //console.log(y, x);
-          if (matrix[y][x] == character) {
-            found.push(this.directions[i]);
-          }
-        }
-      }
-      return found;
-    }
-  
     move() {
       this.getNewCoords();
       var newCell = random(this.chooseCell(0));
@@ -74,7 +56,7 @@ class BlackHole{
 
         ///////////////////////////
         // for Grasses
-         var searchGrass=random(this.chooseCell(1));
+         var searchGrass=random(super.chooseCell(1));
         if(searchGrass!=undefined){
         var grass;
         for (var i = 0; i < grassArr.length; i++) {
