@@ -52,5 +52,11 @@ io.on('connection', function (socket) {
         
     });
     
+    socket.on("send alien to world #2",function(post){
+        socket.emit("get alien from world #1",post);
+    });
 
+    socket.on("send alien to world #1",function(post){
+        socket.emit("get alien from world #2",post);
+    });
 });

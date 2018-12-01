@@ -25,6 +25,7 @@ var statistics = {
  var predatorArr=[];
  var alienArr=[];
  var stormArr=[];
+ var blackHoleArr=[];
  
  for (var y = 0; y <yMax; y++) {
      matrix[y]=[];
@@ -37,6 +38,8 @@ var statistics = {
  matrix[Math.floor(Math.random()*yMax)][Math.floor(Math.random()*xMax)]=4;
  
  matrix[Math.floor(Math.random()*yMax)][Math.floor(Math.random()*xMax)]=5;
+
+ matrix[10][10]=6;
  
  var side = 20;
  
@@ -88,6 +91,10 @@ var statistics = {
                  var storm=new Storm(x,y,5);
                  stormArr.push(storm);
              }
+             else if(matrix[y][x]==6){
+                var blackHole=new BlackHole(x,y,6,2);
+                blackHoleArr.push(blackHole);
+            }
          }
      }  
   }
@@ -144,6 +151,10 @@ var statistics = {
                  fill("blue");
                  rect(x * side, y * side, side, side);
              }
+             else if(matrix[y][x]==6){
+                fill("black");
+                rect(x * side, y * side, side, side);
+            }
          }
      }
  
@@ -174,7 +185,11 @@ var statistics = {
      stormArr[i].swallow();
      }
 
-
+     for(var i=0;i<blackHoleArr.length;i++)
+     blackHoleArr[i].swallow();
   }  
 
+  socket.on("get alien from world #1",function(post){
+    alienArr.push(post);
+  });
 
