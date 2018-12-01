@@ -2,6 +2,7 @@ class Predator extends LivingCreature{
     constructor(x, y, index) {
       super(x,y,index);
       this.energy = 20;
+      statistics.predatorBirth++;
     } 
   
     move() {
@@ -30,7 +31,17 @@ class Predator extends LivingCreature{
             grassEaterArr.splice(i, 1);
           }
         }
-        this.energy += 12;
+
+        statistics.grassEaterDie++;
+
+        if(season==0)
+        this.energy+=3;
+        else if(season==1)
+        this.energy+=9;
+        else if(season==2)
+        this.energy+=12;
+        else
+        this.energy+=6;
       }
       else {
         this.move();
@@ -39,9 +50,17 @@ class Predator extends LivingCreature{
       this.mul();
        matrix[this.y][this.x]=3;
     }
-  
+    
     die() {
-      this.energy -= 2;
+      if(season==0)
+      this.energy--;
+      else if(season==1)
+      this.energy-=3;
+      else if(season==2)
+      this.energy-=4;
+      else 
+      this.energy-=2;
+
       if (this.energy <= 0) {
         for (var i in predatorArr) {
           if (predatorArr[i].x == this.x && predatorArr[i].y == this.y) {
@@ -49,6 +68,8 @@ class Predator extends LivingCreature{
           }
         }
         matrix[this.y][this.x] = 0;
+
+        statistics.predatorDie++;
       }
     }
   

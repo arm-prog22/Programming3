@@ -1,0 +1,24 @@
+{
+  "name": "programming3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Alien.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arm-prog22/Programming3.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arm-prog22/Programming3/issues"
+  },
+  "homepage": "https://github.com/arm-prog22/Programming3#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "socket.io": "^2.1.1"
+  }
+}

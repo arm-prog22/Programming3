@@ -2,6 +2,7 @@ class Alien extends LivingCreature {
     constructor(x, y, index) {
       super(x,y,index);
       this.counter = 0;
+      statistics.alienBirth++;
     }
   
     getNewCoords() {
@@ -37,7 +38,7 @@ class Alien extends LivingCreature {
     change() {
       this.counter +=2;
       
-  
+      
       if(grassArr.length == 0 && grassEaterArr.length == 0 && predatorArr.length == 0){
         for (var y = 0; y <matrix.length; y++) {
           for (var x = 0; x < matrix[0].length; x++) {
@@ -81,7 +82,7 @@ class Alien extends LivingCreature {
   
       }
   
-      else if (this.counter >= 60) {
+      else if (this.counter >= 600) {
         while (grassArr.length != 0) {
           grassArr.pop();
         }

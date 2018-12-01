@@ -2,6 +2,7 @@ class GrassEater extends LivingCreature {
     constructor(x, y, index) {
       super(x,y,index);
       this.energy = 10;
+      statistics.grassEaterBirth++;
     }
   
     move() {
@@ -29,7 +30,15 @@ class GrassEater extends LivingCreature {
             grassArr.splice(i, 1);
           }
         }
-        this.energy += 12;
+        statistics.grassDie++;
+        if(season==0)
+        this.energy+=3;
+        else if(season==1)
+        this.energy+=9;
+        else if(season==2)
+        this.energy+=12;
+        else
+        this.energy+=6;
       }
       else {
         this.move();
@@ -40,7 +49,15 @@ class GrassEater extends LivingCreature {
     }
   
     die() {
-      this.energy -= 2;
+      if(season==0)
+      this.energy--;
+      else if(season==1)
+      this.energy-=3;
+      else if(season==2)
+      this.energy-=4;
+      else 
+      this.energy-=2;
+
       if (this.energy <= 0) {
         for (var i in grassEaterArr) {
           if (grassEaterArr[i].x == this.x && grassEaterArr[i].y == this.y) {
@@ -48,12 +65,13 @@ class GrassEater extends LivingCreature {
           }
         }
         matrix[this.y][this.x] = 0;
+        statistics.grassEaterDie++;
       }
     }
   
     mul() {
       this.getNewCoords();
-      if (this.energy >= 12) {
+      if (this.energy >= 15) {
         var newCell = random(this.chooseCell(0));
         if (newCell) {
           var newGrassEater = new GrassEater(newCell[0], newCell[1], this.index);
