@@ -2,7 +2,6 @@ class Alien extends LivingCreature {
     constructor(x, y, index) {
       super(x,y,index);
       this.counter = 0;
-      statistics.alienBirth++;
     }
   
     getNewCoords() {
@@ -16,23 +15,6 @@ class Alien extends LivingCreature {
   
           }
         }
-      }
-  
-  
-      followBlackHole(){
-        var blackHole=random(this.chooseCell(5));
-        matrix[this.y][this.x]=0;
-        if(blackHole!=undefined&&blackHole!=null){
-          if(blackHole[0]>this.x)
-            ++this.x;
-          if(blackHole[0]<this.x)
-            --this.x;
-          if(blackHole[1]>this.y)
-            ++this.y;
-          if(blackHole[1]<this.y)
-            --this.y;
-        }
-        matrix[this.y][this.x]=4;
       }
   
     change() {
@@ -77,12 +59,12 @@ class Alien extends LivingCreature {
         }
       }
   
-      console.log("The matrix is filled again!!!\n");
+      console.log("The world is filled again!!! by Alien\n");
       
   
       }
   
-      else if (this.counter >= 600) {
+      else if (this.counter >= 150) {
         while (grassArr.length != 0) {
           grassArr.pop();
         }
@@ -92,7 +74,7 @@ class Alien extends LivingCreature {
         while (predatorArr.length != 0) {
           predatorArr.pop();
         }
-  
+        
   
         for (var y = 0; y < matrix.length; y++) {
           for (var x = 0; x < matrix[y].length; x++) {
@@ -117,8 +99,11 @@ class Alien extends LivingCreature {
   
   
         this.counter -= 30;
+        matrix[this.y][this.x]=4;
+
+        statistics.alienRadiation++;
+        console.log("Radiation wave !!! by Alien");
       }
-      this.followBlackHole();
     }
   
   }

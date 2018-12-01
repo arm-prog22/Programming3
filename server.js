@@ -19,7 +19,15 @@ app.use('/p5', express.static(__dirname + '/node_modules/p5/lib/'));
 
 //արմատի շավիղը (rout-ը)
 app.get('/', function (req, res) {
-    res.redirect('index.html');
+    res.redirect('index1.html');
+});
+
+app.get('/1',function(req,res){
+    res.redirect('index1.html');
+});
+
+app.get('/2',function(req,res){
+    res.redirect('index2.html');
 });
 //ստատիստիկայի շավիղը
 app.get('/stats', function (req, res) {
@@ -33,7 +41,7 @@ io.on('connection', function (socket) {
         statData.push(data); //ավելացնում ենք նոր տվյալը զանգվածում
         console.log("Statistics: "+data[0]+"\n");
         fs.writeFile('public/data.json', JSON.stringify(statData)); //գրում ենք ստատսիտկայի տվյալները ֆայլի մեջ
-    })
+    });
 
     socket.on("get stats", function () { //երբ կլիենտը ուղարկում է "get stats" 
         //կարդում ենք ստատիստիկայի ֆայլը
@@ -42,7 +50,7 @@ io.on('connection', function (socket) {
             socket.emit("send stats",statisticsFromFile);    
         });
         
-    })
+    });
     
 
 });
