@@ -1,4 +1,6 @@
+// preparing the server
 var socket = io.connect('http://localhost:4444');
+// an object for statistics 
 var statistics = {
     "timestamp": "",
     "world": 1,
@@ -13,12 +15,16 @@ var statistics = {
     "framecount": 0
 };
 
-/////////// migrated from script.js
+/////////// Game of life : World #1
 
  var yMax=40;
  var xMax=40;
- 
+
+// Creating the matrix of numbers 
+
  var matrix=new Array(yMax);
+
+// Making storages for appropriate objects 
 
  var grassArr=[];
  var grassEaterArr=[];
@@ -27,6 +33,8 @@ var statistics = {
  var stormArr=[];
  var blackHoleArr=[];
  
+// Filling the matrix with randomized initial values  
+
  for (var y = 0; y <yMax; y++) {
      matrix[y]=[];
      for (var x = 0; x < xMax; x++) {
@@ -41,6 +49,7 @@ var statistics = {
  
  matrix[10][10]=6;
  
+
  var side = 20;
  
   var season=0;
@@ -60,7 +69,7 @@ var statistics = {
   if(autumn!=undefined)
   autumn.addEventListener("click", function(){ season=3; });
  
- 
+// Setting up the canvas and object part 
   function setup() {
      createCanvas(xMax * side, yMax * side);
      background('#acacac');
@@ -99,6 +108,7 @@ var statistics = {
  
      
   function draw() {
+      // Sending statistics to server
     if (frameCount % 60 === 0) {
         statistics.timestamp = (new Date()).toString();
         statistics.framecount = frameCount;
@@ -106,6 +116,9 @@ var statistics = {
         socket.emit("send data", statistics);
     }
 
+     // Manipulate the speed of the world using the frameRate
+      // Note: I've also organized the manipulation of the reproduction speed
+      // in the way of modifying the code of character classes
       if(season==0)
      frameRate(5);
      else if(season==1)
@@ -115,10 +128,12 @@ var statistics = {
      else 
      frameRate(250);
  
+      // drawing the matrix
      for (var y = 0; y < matrix.length; y++) {
          for (var x = 0; x < matrix[y].length; x++) {
   
              if (matrix[y][x] == 1) {
+                  // Manipulating the colour of Grass according to the weather
                  if(season==0)
                  fill("#99ffcc");
                  else if(season==1)
@@ -184,10 +199,12 @@ var statistics = {
      stormArr[i].swallow();
      }    
 
+      // for BlackHoles
     for(var i=0;i<blackHoleArr.length;i++)
      blackHoleArr[i].swallow();
   }  
 
+    // getting alien from the black hole of the other world 
   socket.on("get alien from world #2",function(post){
     alienArr.push(post);
   });
