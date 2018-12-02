@@ -1,3 +1,5 @@
+// it is the same balck hole from Programming2 
+// I've just renamed it
 class Storm extends LivingCreature{
     constructor(x,y,index){
       super(x,y,index);
