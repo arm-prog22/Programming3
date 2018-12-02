@@ -76,3 +76,4 @@ class BlackHole extends LivingCreature{
         this.move();
       }
   }
+
