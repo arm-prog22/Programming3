@@ -1,4 +1,6 @@
+// preparing the server
 var socket = io.connect('http://localhost:4444');
+// an object for statistics 
 var statistics = {
     "timestamp": "",
     "world": 2,
@@ -13,12 +15,16 @@ var statistics = {
     "framecount": 0
 };
 
-/////////// migrated from script.js
+/////////// Game of life : World #2
 
  var yMax=40;
  var xMax=40;
  
+// Creating the matrix of numbers 
+
  var matrix=new Array(yMax);
+
+// Making storages for appropriate objects 
 
  var grassArr=[];
  var grassEaterArr=[];
@@ -26,6 +32,8 @@ var statistics = {
  var alienArr=[];
  var stormArr=[];
  var blackHoleArr=[];
+
+// Filling the matrix with randomized initial values  
  
  for (var y = 0; y <yMax; y++) {
      matrix[y]=[];
@@ -61,7 +69,7 @@ var statistics = {
   autumn.addEventListener("click", function(){ season=3; });
  
  
- 
+ // Setting up the canvas and object part 
  
   function setup() {
      createCanvas(matrix[0].length * side, matrix.length * side);
@@ -101,6 +109,7 @@ var statistics = {
  
      
   function draw() {
+       // Sending statistics to server
     if (frameCount % 60 === 0) {
         statistics.timestamp = (new Date()).toString();
         statistics.framecount = frameCount;
@@ -108,6 +117,9 @@ var statistics = {
         socket.emit("send data", statistics);
     }
 
+      // Manipulate the speed of the world using the frameRate
+      // Note: I've also organized the manipulation of the reproduction speed
+      // in the way of modifying the code of character classes  
       if(season==0)
      frameRate(5);
      else if(season==1)
@@ -116,11 +128,14 @@ var statistics = {
      frameRate(500);
      else 
      frameRate(250);
+      
+       // draw the matrix
  
      for (var y = 0; y < matrix.length; y++) {
          for (var x = 0; x < matrix[y].length; x++) {
   
              if (matrix[y][x] == 1) {
+                 // Manipulating the colour of Grass according to the weather
                  if(season==0)
                  fill("#99ffcc");
                  else if(season==1)
@@ -185,10 +200,12 @@ var statistics = {
      stormArr[i].swallow();
      }
 
+       // for BlackHoles
      for(var i=0;i<blackHoleArr.length;i++)
      blackHoleArr[i].swallow();
   }  
 
+    // getting alien from the black hole of the other world 
   socket.on("get alien from world #1",function(post){
     alienArr.push(post);
   });
