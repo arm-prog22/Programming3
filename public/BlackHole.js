@@ -1,3 +1,10 @@
+// This is NOT the same black hole from Programming 2
+// I've renamed BlackHole from Programming 2 like Storm
+
+// This is a NEW SPECIAL CHARACTER
+// which moves throgh the matrix and looks for an alien
+// to swallow in order to send it to the other world
+
 class BlackHole extends LivingCreature{
     constructor(x,y,index,world){
       super(x,y,index);
