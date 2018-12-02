@@ -1,17 +1,19 @@
 var socket = io.connect('http://localhost:4444');
 var table = document.getElementById("statistics");
 
-//Ամեն 10000 մլվրկ֊ը մեկ
+// With the interval of 60 miliseconds
 setInterval(function(){
-    //ուղարկում ենք "get stats" հացրումը սերվերին
+    // make a query to server for statistics
     socket.emit("get stats", []);
 }, 60);
 
     
 
-//Երբ սերվերը ուղարկում է տվյալ "send stats" պիտակով
+// getting statistics from the server
+
 socket.on("send stats",function(statistics){
-    //Պատրսատում ենք աղյուսակը
+
+    // Making the table of statistics
     statistics = JSON.parse(statistics);
     table.innerHTML = "";
     tableHTML = "<tr><td>Date and Time</td><td>World</td><td>Grass Births</td><td>Grass Dies</td><td>GrassEater Births</td><td>GrassEater Dies</td><td>Predator Births</td><td>Predator Dies</td><td>Alien Radiation</td><td>Storm Birth</td><td>frameCount</td></tr>";
@@ -32,6 +34,6 @@ socket.on("send stats",function(statistics){
     }
 
     table.innerHTML = tableHTML;
-    console.log(statistics);
+   
 })
 
