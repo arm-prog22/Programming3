@@ -1,35 +1,40 @@
-var fs = require('fs');  //ֆայլերի մեջ գրել և կարդալու համար
-var express = require('express'); //սերվեր
+var fs = require('fs');  // for working with files
+var express = require('express'); // preparing the server
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
-var statData = []; //ստատիստիկան պահպանող օբյեկտների զանգվածը
 
-//եթե ֆայլը կա
+// an array for statistics managment
+var statData = []; 
+
+// if the specified file exists
 if (fs.existsSync("public/data.json")) {
-    //կարդում ենք ֆայլից և անմիջապես դարձնում օբյեկտ 
+    // we read from it and immediately convert the result to object 
     var statData = require("./public/data.json");
 }
 
-//սահմանում ենք, ստատիկ ֆայլերի դիրեկտորիան
+// defining the directory of static files
 app.use(express.static("public"));
-//սահմանում ենք կլիենտին անհրաժեշտ javascript-ների դիրեկտորիաները, տես index.html-ում
+// defining javascript directories required by client-side 
 app.use('/socket', express.static(__dirname + '/node_modules/socket.io-client/dist/'));
 app.use('/p5', express.static(__dirname + '/node_modules/p5/lib/'));
 
-//արմատի շավիղը (rout-ը)
+// default path that simply directs to World #1
 app.get('/', function (req, res) {
     res.redirect('index1.html');
 });
 
+// directing to World #1 
 app.get('/1',function(req,res){
     res.redirect('index1.html');
 });
 
+// directing to World #2
 app.get('/2',function(req,res){
     res.redirect('index2.html');
 });
-//ստատիստիկայի շավիղը
+
+// directing to Statistics
 app.get('/stats', function (req, res) {
     res.redirect('stats.html');
 });
@@ -37,25 +42,34 @@ app.get('/stats', function (req, res) {
 server.listen(4444);
 
 io.on('connection', function (socket) {
+    // getting statistics from World #1 or/and World #2 
     socket.on("send data", function (data) {
-        statData.push(data); //ավելացնում ենք նոր տվյալը զանգվածում
+        // pushing new data into the array of stats
+        statData.push(data); 
         console.log("Statistics: "+data[0]+"\n");
-        fs.writeFile('public/data.json', JSON.stringify(statData)); //գրում ենք ստատսիտկայի տվյալները ֆայլի մեջ
+        // writing recent statistics to the data.json file
+        fs.writeFile('public/data.json', JSON.stringify(statData)); 
     });
 
-    socket.on("get stats", function () { //երբ կլիենտը ուղարկում է "get stats" 
-        //կարդում ենք ստատիստիկայի ֆայլը
+    
+    // sending statistics to stats.html
+    socket.on("get stats", function () { 
+        // reading recent statistics from the data.json file
         fs.readFile('public/data.json', "utf8", function(err, statisticsFromFile) {
-            //և ուղարկում ենք այն "send stats" պիտակով
+            // sending recent statistics to stats.html 
             socket.emit("send stats",statisticsFromFile);    
         });
         
     });
     
+    // Special events
+    // an alien is moved to another world by a black hole 
+    
     socket.on("send alien to world #2",function(post){
         socket.emit("get alien from world #1",post);
     });
-
+    
+    
     socket.on("send alien to world #1",function(post){
         socket.emit("get alien from world #2",post);
     });
